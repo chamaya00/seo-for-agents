@@ -1,0 +1,104 @@
+name: collect
+
+# The API path of the measurement framework (docs/measurement/4-measurement-framework.md,
+# section 11.4), run where the network is: a GitHub Actions runner. Standing rule O6 on
+# issue #2 - no session holds a key and no session makes a call. Each key reaches the
+# collector as one environment variable set from the repository secret of the same name;
+# the collector reads only the variable for the assistant it was asked to collect.
+#
+# What this does: runs scripts/collect.py for one assistant and one arm, writes one JSON
+# file per response under data/responses/<arm>/<assistant>/api/, uploads that directory
+# as an artifact, and pushes it to a branch named collect/<arm>-<assistant>-<run id>. The
+# driver opens the pull request from that branch and the gate runs the tests on it. Files
+# reach main only through that pull request; until then nothing is "collected" (11.2).
+#
+# Exit status of the collector: 0 every request came back; 1 the arm ran to the end with
+# some `failed` records (the files say why); 2, 3 and 4 mean nothing was written - a
+# missing or unpinned setting, an unreachable host, a rejected key. The later steps run
+# whatever the exit was, so what exists is kept and the run page says what happened.
+#
+# The log carries counts only. Response bodies, response text and keys never appear in it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      assistant:
+        description: Which assistant to collect
+        type: choice
+        required: true
+        options: [gemini, claude, chatgpt]
+      arm:
+        description: Which arm this collection belongs to
+        type: choice
+        required: true
+        options: [baseline, post-change]
+      repeats:
+        description: Repeats per question (5, or 10 after section 7.4's test fails)
+        type: string
+        default: '5'
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    name: collect ${{ inputs.assistant }} ${{ inputs.arm }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run the collector
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ASSISTANT: ${{ inputs.assistant }}
+          ARM: ${{ inputs.arm }}
+          REPEATS: ${{ inputs.repeats }}
+          RUNNER_LABEL: ubuntu-latest
+        run: |
+          python3 scripts/collect.py \
+            --question-set data/question-set.json \
+            --settings data/collection-settings.json \
+            --assistant "$ASSISTANT" --arm "$ARM" --repeats "$REPEATS" \
+            --out "data/responses/$ARM"
+
+      - name: Count what was written
+        if: always()
+        env:
+          ASSISTANT: ${{ inputs.assistant }}
+          ARM: ${{ inputs.arm }}
+        run: |
+          dir="data/responses/$ARM/$ASSISTANT/api"
+          if [ -d "$dir" ]; then
+            echo "files written: $(find "$dir" -name '*.json' | wc -l)"
+          else
+            echo "files written: 0 (nothing was written - see the collector's exit status above)"
+          fi
+
+      - name: Upload the responses as an artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: responses-${{ inputs.arm }}-${{ inputs.assistant }}-${{ github.run_id }}
+          path: data/responses/${{ inputs.arm }}/${{ inputs.assistant }}/api/
+          if-no-files-found: warn
+
+      - name: Push the responses to a collection branch
+        if: always()
+        env:
+          ASSISTANT: ${{ inputs.assistant }}
+          ARM: ${{ inputs.arm }}
+          BRANCH: collect/${{ inputs.arm }}-${{ inputs.assistant }}-${{ github.run_id }}
+        run: |
+          dir="data/responses/$ARM/$ASSISTANT/api"
+          if [ ! -d "$dir" ]; then echo "nothing to push"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add "$dir"
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Collect $ASSISTANT $ARM responses (workflow run ${{ github.run_id }})"
+          git push -u origin "$BRANCH"
+          echo "pushed $BRANCH"
