@@ -114,3 +114,4 @@ jobs:
         test -d docs/memory
         test -x scripts/design-render && test -x scripts/app-render && test -x scripts/contrast
         python3 -m unittest discover -s tests -v
+        python3 scripts/score.py
