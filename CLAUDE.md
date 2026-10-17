@@ -16,39 +16,45 @@ My explorations and experiments in optimizing websites so AI agents and assistan
 
 ## Stack
 
-Not chosen yet. Provisioning fills this in when the repository already answers
-it - a manifest, a lockfile, code that is already here - and leaves this
-sentence standing when it does not. A greenfield repository is asked for its
-stack before anybody could know it, and a guess written here reads exactly like
-a decision somebody made.
+Python 3, standard library only, on the system `python3` of a plain
+`ubuntu-latest` runner - ADR `docs/decisions/0001-python-standard-library-for-measurement-tooling.md`.
+The code is the measurement tooling under `scripts/measurement/` with two
+entry points, `scripts/score.py` and `scripts/collect.py`; the tests are under
+`tests/`. The data shape is section 11 of
+`docs/measurement/4-measurement-framework.md`, and the data itself lives under
+`data/`. There is no package manager, no lockfile and no build.
 
-Choosing it changes a category, so it arrives as an ADR under
-`docs/decisions/`, and this section is rewritten in the same pull request.
-
-Nothing publishes this repository yet either. When something does, the question
-that matters is whether the gate runs what publishes it - the comment at the
-top of `.github/workflows/ci.yml` asks it at the moment it becomes answerable,
-which is the moment somebody replaces the gate.
+Nothing publishes this repository. The gate runs the tests and the scorer; the
+collector runs in a `workflow_dispatch` workflow on a runner, never in a
+session (O6 on #2). If something starts publishing it, the question at the top
+of `.github/workflows/ci.yml` - does the gate run what publishes it - becomes
+answerable and is answered in the pull request that makes the swap.
 
 ## Commands
 
-- Install: none yet - nothing to install until the stack is chosen.
-- Dev: none yet, for the same reason.
-- Checks CI runs: none of this project's own yet. The gate runs the scaffolding
-  checks written out in `.github/workflows/ci.yml` and nothing else.
+- Install: none. `python3` 3.12 or later is the only requirement, and the
+  runner has it.
+- Dev:
+  - `python3 scripts/score.py [--data data] [--json]` - score every record
+    under `data/responses/` and every report under `data/indexing/`; exits 1
+    naming the file and the invariant when a record is refused.
+  - `python3 scripts/collect.py --question-set data/question-set.json --assistant <claude|gemini|chatgpt> --repeats 5 --arm <baseline|post-change> --out data/responses/<arm>`
+    - the API collector; runs only inside the `workflow_dispatch` workflow,
+    with the assistant's key in `ANTHROPIC_API_KEY`, `GEMINI_API_KEY` or
+    `OPENAI_API_KEY` and `GITHUB_RUN_ID` set. `--help` on either prints the
+    full contract.
+- Checks CI runs: `python3 -m unittest discover -s tests -v`, from the
+  repository root. One check is the complete answer: it covers the scorer,
+  the collector against a stubbed HTTP layer, the four frozen data files and
+  the recording template. No test makes a network call.
 
-Replace all three the moment there is something to name. On a Node project that
-is `npm run typecheck`, `npm run lint`, `npm run test`, `npm run build`. On a
-project with no package manager it might be a single `bash tests/check.sh`, and
-one check is a complete answer - name what this project has rather than the
-four a Node project would have.
-
-The checks above are what CI runs once the gate is real. Until then it is
-not: `.github/workflows/ci.yml` ships a placeholder that checks the scaffolding
-is intact and fails the moment product code lands, because a project gets its
+The check above is what CI runs once the gate is real. Until the swap lands,
+`.github/workflows/ci.yml` ships a placeholder that checks the scaffolding is
+intact and fails the moment product code lands, because a project gets its
 gate before it gets its stack and a gate that goes green on untested code is
-worse than no gate. Replacing it is a step in building this project, not a
-chore to do later - the comment at the top of that file says how.
+worse than no gate. The comment at the top of that file says how to swap it;
+on this project the `commands` path is the destination, with the one command
+above in it.
 
 Whatever the gate runs, the rule is the same. If a check is renamed here,
 rename it in `.github/workflows/ci.yml` in the same commit, or the gate
@@ -60,13 +66,6 @@ the same however often the commands under it change. Renaming that job is the
 one edit here that breaks the rule: a required check that stops reporting
 blocks every merge rather than gating them, including the pull request that
 would name it back.
-
-<!-- agent-factory:begin -->
-<!-- Everything from here to the agent-factory:end marker describes the shared
-     process rather than this project, and /update-agents replaces the whole
-     block when this repository moves to a new factory release. An edit inside
-     it is lost on the next update: put anything specific to this repository
-     outside the block, where nothing will overwrite it. -->
 
 ## How work moves
 
