@@ -113,4 +113,4 @@ jobs:
         test -d docs/research && test -d docs/design && test -d docs/decisions
         test -d docs/memory
         test -x scripts/design-render && test -x scripts/app-render && test -x scripts/contrast
-        unexpected="$(git ls-files | grep -Ev '^(README\.md|CLAUDE\.md|\.github/|\.claude/|docs/|scripts/)' || true)"; if [ -n "$unexpected" ]; then echo "::error::Product code has landed and this placeholder gate does not test it: $unexpected. Replace the commands below with the project's real checks - see the comment at the top of this file. Branch protection does not need re-pointing; the check name does not change."; exit 1; fi
+        python3 -m unittest discover -s tests -v

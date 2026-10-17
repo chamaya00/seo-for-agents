@@ -9,3 +9,5 @@ thing, drop the one that has stopped being relevant, tighten what survives.
 
 Delete any lesson that has graduated into a test, a lint rule, or a type.
 -->
+
+- Sabotage a check by running `python3 -m unittest discover -s tests`, never `python3 -m unittest tests.<module>` - the test modules import `support` from `tests/`, so the module form dies on import and prints a failure that looks exactly like the sabotage being caught.

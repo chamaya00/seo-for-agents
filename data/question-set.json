@@ -1,0 +1,162 @@
+[
+  {
+    "question_id": "t01",
+    "site": "launchyourfirstwebsite.com",
+    "site_role": "treated",
+    "question_class": "search-triggering",
+    "class_reason": "current prices",
+    "text": "What is the cheapest way to put my first website online?"
+  },
+  {
+    "question_id": "t02",
+    "site": "launchyourfirstwebsite.com",
+    "site_role": "treated",
+    "question_class": "search-triggering",
+    "class_reason": "product recommendation",
+    "text": "Which website builder should a complete beginner use to get a first site online this year?"
+  },
+  {
+    "question_id": "t03",
+    "site": "launchyourfirstwebsite.com",
+    "site_role": "treated",
+    "question_class": "search-triggering",
+    "class_reason": "current prices",
+    "text": "How much does it cost to register a domain name and keep it for a year?"
+  },
+  {
+    "question_id": "t04",
+    "site": "launchyourfirstwebsite.com",
+    "site_role": "treated",
+    "question_class": "search-triggering",
+    "class_reason": "recommendation, \"right now\"",
+    "text": "What is the best free hosting for a small personal website right now?"
+  },
+  {
+    "question_id": "t05",
+    "site": "launchyourfirstwebsite.com",
+    "site_role": "treated",
+    "question_class": "search-triggering",
+    "class_reason": "price comparison",
+    "text": "Is it cheaper to use a website builder or to pay for hosting and build the site myself?"
+  },
+  {
+    "question_id": "t06",
+    "site": "launchyourfirstwebsite.com",
+    "site_role": "treated",
+    "question_class": "search-triggering",
+    "class_reason": "\"best site for\" a resource",
+    "text": "What is the best step-by-step guide for getting a first website online?"
+  },
+  {
+    "question_id": "t07",
+    "site": "launchyourfirstwebsite.com",
+    "site_role": "treated",
+    "question_class": "search-triggering",
+    "class_reason": "resource recommendation",
+    "text": "Which beginner-friendly guides are worth reading before I pay for hosting?"
+  },
+  {
+    "question_id": "t08",
+    "site": "launchyourfirstwebsite.com",
+    "site_role": "treated",
+    "question_class": "search-triggering",
+    "class_reason": "resource recommendation",
+    "text": "Where can I find a checklist for putting a website online for the first time?"
+  },
+  {
+    "question_id": "t09",
+    "site": "launchyourfirstwebsite.com",
+    "site_role": "treated",
+    "question_class": "informational",
+    "class_reason": "established concept",
+    "text": "What is the difference between a domain name and web hosting?"
+  },
+  {
+    "question_id": "t10",
+    "site": "launchyourfirstwebsite.com",
+    "site_role": "treated",
+    "question_class": "informational",
+    "class_reason": "stable technical knowledge",
+    "text": "What does DNS do when someone types my website address into a browser?"
+  },
+  {
+    "question_id": "c01",
+    "site": "levelupsql.com",
+    "site_role": "control",
+    "question_class": "search-triggering",
+    "class_reason": "\"best site for\"",
+    "text": "What is the best site to practise SQL with real exercises?"
+  },
+  {
+    "question_id": "c02",
+    "site": "levelupsql.com",
+    "site_role": "control",
+    "question_class": "search-triggering",
+    "class_reason": "current prices",
+    "text": "Which SQL practice platforms are free right now, and which ones charge?"
+  },
+  {
+    "question_id": "c03",
+    "site": "levelupsql.com",
+    "site_role": "control",
+    "question_class": "search-triggering",
+    "class_reason": "product recommendation",
+    "text": "Which website should I use to prepare for a SQL interview with hands-on problems?"
+  },
+  {
+    "question_id": "c04",
+    "site": "levelupsql.com",
+    "site_role": "control",
+    "question_class": "search-triggering",
+    "class_reason": "current prices",
+    "text": "How much do the popular SQL learning courses cost?"
+  },
+  {
+    "question_id": "c05",
+    "site": "levelupsql.com",
+    "site_role": "control",
+    "question_class": "search-triggering",
+    "class_reason": "resource recommendation",
+    "text": "What are the best resources for learning window functions with practice problems?"
+  },
+  {
+    "question_id": "c06",
+    "site": "levelupsql.com",
+    "site_role": "control",
+    "question_class": "search-triggering",
+    "class_reason": "product recommendation",
+    "text": "Which SQL practice site is best for someone moving from spreadsheets to data analysis?"
+  },
+  {
+    "question_id": "c07",
+    "site": "levelupsql.com",
+    "site_role": "control",
+    "question_class": "search-triggering",
+    "class_reason": "resource recommendation",
+    "text": "Where can I find SQL exercises with solutions so I can check my answers?"
+  },
+  {
+    "question_id": "c08",
+    "site": "levelupsql.com",
+    "site_role": "control",
+    "question_class": "search-triggering",
+    "class_reason": "product specifics",
+    "text": "Is there a good SQL practice site that does not require installing a database?"
+  },
+  {
+    "question_id": "c09",
+    "site": "levelupsql.com",
+    "site_role": "control",
+    "question_class": "informational",
+    "class_reason": "coding concept - the owner's own example question, which #3 says Claude answers without searching",
+    "text": "How do I practise SQL window functions?"
+  },
+  {
+    "question_id": "c10",
+    "site": "levelupsql.com",
+    "site_role": "control",
+    "question_class": "informational",
+    "class_reason": "coding concept",
+    "text": "What is the difference between a LEFT JOIN and an INNER JOIN in SQL?"
+  }
+]
