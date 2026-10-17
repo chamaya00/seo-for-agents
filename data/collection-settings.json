@@ -1,8 +1,8 @@
 {
-  "$comment": "Section 8 and 11.8 of docs/measurement/4-measurement-framework.md. One row per assistant and surface. Every null `model` and every null `tool_version` on an api row is the driver's to pin with an exact id or the vendor's current tool type string before the baseline; the collector refuses to run on a null. Nothing here changes between arms.",
+  "$comment": "Section 8 and 11.8 of docs/measurement/4-measurement-framework.md. One row per assistant and surface. The api rows are pinned by the driver before the baseline (D11 on #2): claude from Anthropic's model and web search tool documentation; gemini and chatgpt to the ids and tool type string the driver proposed and the owner confirmed from the vendors' documentation. An app row's model cannot be pinned and stays null; the collector copies the row into every record and the scorer enforces I7. Nothing here changes between arms.",
   "gemini": {
     "api": {
-      "model": null,
+      "model": "gemini-2.5-flash",
       "web_tool": "google_search",
       "tool_version": null,
       "dynamic_threshold": null,
@@ -28,9 +28,9 @@
   },
   "claude": {
     "api": {
-      "model": null,
+      "model": "claude-opus-5-5",
       "web_tool": "web_search",
-      "tool_version": null,
+      "tool_version": "web_search_20250305",
       "dynamic_threshold": null,
       "max_uses": 5,
       "system_prompt": null,
@@ -54,9 +54,9 @@
   },
   "chatgpt": {
     "api": {
-      "model": null,
+      "model": "gpt-5-2025-08-07",
       "web_tool": "web_search",
-      "tool_version": null,
+      "tool_version": "web_search",
       "dynamic_threshold": null,
       "max_uses": null,
       "system_prompt": null,

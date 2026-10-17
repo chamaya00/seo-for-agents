@@ -83,12 +83,22 @@ class CollectionSettingsTest(unittest.TestCase):
                 row = SETTINGS[assistant][surface]
                 self.assertEqual(sorted(row), sorted(("model",) + records.SETTINGS_ROW_FIELDS), (assistant, surface))
 
-    def test_model_and_every_tool_type_string_are_null_for_the_driver(self):
+    def test_api_rows_are_pinned_and_app_rows_are_not(self):
+        # Section 8: one exact model id per API cell, chosen before the baseline
+        # and never changed between arms. An app's model cannot be pinned, so
+        # the app rows stay null and the recorder writes what the app shows.
         for assistant in records.ASSISTANTS:
-            for surface in records.SURFACES:
-                row = SETTINGS[assistant][surface]
-                self.assertIsNone(row["model"], (assistant, surface))
-                self.assertIsNone(row["tool_version"], (assistant, surface))
+            api = SETTINGS[assistant]["api"]
+            self.assertIsInstance(api["model"], str, assistant)
+            self.assertTrue(api["model"].strip(), assistant)
+            app = SETTINGS[assistant]["app"]
+            self.assertIsNone(app["model"], assistant)
+            self.assertIsNone(app["tool_version"], assistant)
+        # Gemini's tool is named by `web_tool`, so its `tool_version` stays null;
+        # the other two vendors name the tool by a type string.
+        self.assertIsNone(SETTINGS["gemini"]["api"]["tool_version"])
+        self.assertEqual(SETTINGS["claude"]["api"]["tool_version"], "web_search_20250305")
+        self.assertIsInstance(SETTINGS["chatgpt"]["api"]["tool_version"], str)
 
     def test_section_eight_values(self):
         gemini = SETTINGS["gemini"]["api"]
