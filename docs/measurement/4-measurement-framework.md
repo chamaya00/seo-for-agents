@@ -115,7 +115,7 @@ The order is a reporting convention, chosen because each step gives the reader m
 
 ### 3.9 Worked examples
 
-Score each example before reading 3.10. Every example is for the treated site unless it says otherwise; "fingerprint" in example D is a hypothetical one, since the real list does not exist yet. Hosts are matched by the rule in 3.3.
+Score each example before reading 3.10. Every example is for the treated site unless it says otherwise, and every example is a baseline record except D, which is post-change: 3.7's generic rule would mark a fingerprint that matches in a baseline API record with `retrieved = false`, so D's score depends on its arm. "Fingerprint" in example D is a hypothetical one, since the real list does not exist yet. Hosts are matched by the rule in 3.3.
 
 **A.** Claude API. `searched = true`. Retrieved set: `hostinger.com`, `launchyourfirstwebsite.com/hosting`, `wordpress.com`. No `citations` on any text block. Text: "The cheapest route is usually a shared hosting plan plus a domain from a registrar. Smaller guides such as launchyourfirstwebsite.com walk through the steps, though I could not verify their current prices."
 
@@ -123,7 +123,7 @@ Score each example before reading 3.10. Every example is for the treated site un
 
 **C.** Claude API. `searched = true`. Retrieved set: `launchyourfirstwebsite.com/domains`, `namecheap.com`, `cloudflare.com`. One text block "A .com domain costs 10 to 15 dollars a year at most registrars." carries `citations: [{type: "web_search_result_location", url: "https://launchyourfirstwebsite.com/domains", ...}]`. The word "launchyourfirstwebsite" appears nowhere in the text.
 
-**D.** Gemini API. `searched = false`, so the retrieved set is empty. Text: "Budget for three bills in your first year - the domain, the hosting and the certificate - and most of them renew at a higher price than you paid." The treated site's fingerprint list contains "the three bills you will pay in year one are the domain, the hosting and the certificate". No name, no URL, no citation.
+**D.** Gemini API, **post-change arm**. `searched = false`, so the retrieved set is empty. Text: "Budget for three bills in your first year - the domain, the hosting and the certificate - and most of them renew at a higher price than you paid." The treated site's fingerprint list contains "the domain, the hosting and the certificate" (seven consecutive words, as 11.6 requires). No name, no URL, no citation.
 
 **E.** Control site, Gemini API. `searched = true`. Retrieved set titles: `learnsql.com`, `linkedin.com`, `sqlzoo.net`. Text: "Good options are LearnSQL's practice sets, SQLZoo, and LinkedIn Learning's Level Up: SQL series, which has graded exercises." No grounding support points at a chunk on levelupsql.com.
 
