@@ -43,10 +43,14 @@ answerable and is answered in the pull request that makes the swap.
     with the assistant's key in `ANTHROPIC_API_KEY`, `GEMINI_API_KEY` or
     `OPENAI_API_KEY` and `GITHUB_RUN_ID` set. `--help` on either prints the
     full contract.
-- Checks CI runs: `python3 -m unittest discover -s tests -v`, from the
-  repository root. One check is the complete answer: it covers the scorer,
-  the collector against a stubbed HTTP layer, the four frozen data files and
-  the recording template. No test makes a network call.
+- Checks CI runs, from the repository root, in this order:
+  - `python3 -m unittest discover -s tests -v` - covers the scorer, the
+    collector against a stubbed HTTP layer, the four frozen data files and the
+    recording template. No test makes a network call.
+  - `python3 scripts/score.py` - scores every record under `data/responses/`
+    and every report under `data/indexing/` against the framework's
+    invariants, so a malformed record cannot merge green. Exits 0 on an empty
+    `data/` directory.
 
 The check above is what CI runs once the gate is real. Until the swap lands,
 `.github/workflows/ci.yml` ships a placeholder that checks the scaffolding is
