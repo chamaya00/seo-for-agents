@@ -1,0 +1,81 @@
+{
+  "$comment": "Section 8 and 11.8 of docs/measurement/4-measurement-framework.md. One row per assistant and surface. Every null `model` and every null `tool_version` on an api row is the driver's to pin with an exact id or the vendor's current tool type string before the baseline; the collector refuses to run on a null. Nothing here changes between arms.",
+  "gemini": {
+    "api": {
+      "model": null,
+      "web_tool": "google_search",
+      "tool_version": null,
+      "dynamic_threshold": null,
+      "max_uses": null,
+      "system_prompt": null,
+      "temperature": null,
+      "logged_in": null,
+      "temporary_chat": null,
+      "search_forced": null
+    },
+    "app": {
+      "model": null,
+      "web_tool": "app-default",
+      "tool_version": null,
+      "dynamic_threshold": null,
+      "max_uses": null,
+      "system_prompt": null,
+      "temperature": null,
+      "logged_in": true,
+      "temporary_chat": null,
+      "search_forced": false
+    }
+  },
+  "claude": {
+    "api": {
+      "model": null,
+      "web_tool": "web_search",
+      "tool_version": null,
+      "dynamic_threshold": null,
+      "max_uses": 5,
+      "system_prompt": null,
+      "temperature": null,
+      "logged_in": null,
+      "temporary_chat": null,
+      "search_forced": null
+    },
+    "app": {
+      "model": null,
+      "web_tool": "app-default",
+      "tool_version": null,
+      "dynamic_threshold": null,
+      "max_uses": null,
+      "system_prompt": null,
+      "temperature": null,
+      "logged_in": true,
+      "temporary_chat": null,
+      "search_forced": false
+    }
+  },
+  "chatgpt": {
+    "api": {
+      "model": null,
+      "web_tool": "web_search",
+      "tool_version": null,
+      "dynamic_threshold": null,
+      "max_uses": null,
+      "system_prompt": null,
+      "temperature": null,
+      "logged_in": null,
+      "temporary_chat": null,
+      "search_forced": null
+    },
+    "app": {
+      "model": null,
+      "web_tool": "app-default",
+      "tool_version": null,
+      "dynamic_threshold": null,
+      "max_uses": null,
+      "system_prompt": null,
+      "temperature": null,
+      "logged_in": true,
+      "temporary_chat": true,
+      "search_forced": false
+    }
+  }
+}
